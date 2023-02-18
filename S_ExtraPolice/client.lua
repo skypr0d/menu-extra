@@ -1,5 +1,5 @@
 ESX = nil
-TriggerEvent('esx:getActiveLifeObject', function(obj) ESX = obj end)
+TriggerEvent('esx:getActiveLifeObject', function(obj) ESX = obj end) -- Edit your ESX Trigger
 
 ----------------------------------------------------------------
 
@@ -121,13 +121,13 @@ local couleur = {
     [7] = {color = 38, color2 = 38},
     [8] = {color = 64, color2 = 64},
 }
-local arrayIndexcar = 1
 
+local arrayIndexcar = 1
 local startIndex = 0
 local livery = 0
 local Window = 0
 
-function OpenMenuPoliceChest()
+function OpenMenuExtra()
     if PoliceOpenExtra then PoliceOpenExtra = false else PoliceOpenExtra = true
         RageUI.Visible(RMenu:Get('PoliceOpenExtra', 'menu'), true)
 		Citizen.CreateThread(function()
@@ -138,7 +138,7 @@ function OpenMenuPoliceChest()
 					RageUI.CloseAll()
 					exports['ActiveLife']:Alert("", "Tu n'est plus dans un véhicule", 10000, 'error')
 					break
-				elseif #(GetEntityCoords(PlayerPedId()) - vector3(-1077.71, -845.60, 4.57)) >= 5.0 then 
+				elseif #(GetEntityCoords(PlayerPedId()) - vector3(-1077.71, -845.60, 4.57)) >= 5.0 then -- Modify this position if you change the menu item
 					RageUI.CloseAll()
 					exports['ActiveLife']:Alert("", "Tu es trop loin du point !", 10000, 'error')
 					break
@@ -299,7 +299,7 @@ function OpenMenuPoliceChest()
     end 
 end
                             
-local vehicle = {
+local vehicle = { -- Whitelist vehicle lists
 	'18charger',
 	'cvpi',
 	'16charger',
@@ -323,10 +323,10 @@ Citizen.CreateThread(function()
 							DrawText3Ds(v.Position.x, v.Position.y, v.Position.z, ""..v.Text3D.."")
 							DrawMarker(36, v.Position.x, v.Position.y, v.Position.z-0.97, v.Marker.dirX, v.Marker.dirY, v.Marker.dirZ, v.Marker.rotX, v.Marker.rotY, v.Marker.rotZ, v.Marker.scaleX, v.Marker.scaleY, v.Marker.scaleZ, v.Color.red, v.Color.green, v.Color.blue, v.Color.alpha, false, false, true, false, false, false, false, false)
 							if IsControlJustPressed(0, 38) and #(CoordsP - v.Position) <= 2.0 then 
-								print(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(PlayerPedId(), false))))
+-- 								print(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(PlayerPedId(), false))))
 								for _,v in pairs(vehicle) do 
-									if GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(PlayerPedId(), false))) == v then 
-										OpenMenuPoliceChest()
+									if GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(PlayerPedId(), false))) == v then -- Use (string.lower) if you have problems with the vehicle name
+										OpenMenuExtra()
 									end
 								end
 							end
