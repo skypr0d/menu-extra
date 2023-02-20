@@ -1,5 +1,7 @@
 # Fivem Script [FREE] · Extra menu *(color, livery, extra)*
 
+QBCORE : by @Kaizen-DFA https://github.com/Kaizen-DFA/menu-extra
+
 > [Preview](https://youtu.be/YYjoAiIJZCI)
 > [Tebex](https://skyprod.tebex.io/package/5534037) *(It’s free, don’t worry)*
 
