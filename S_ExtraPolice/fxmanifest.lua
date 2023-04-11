@@ -12,7 +12,9 @@ client_script {
     "RageUI/menu/panels/*.lua",
     "RageUI/menu/windows/*.lua",
     "RageUI/menu/Function.lua",
-
+	"languages.lua",
     "client.lua",
-    "config.lua",
+    
 }
+shared_script '@es_extended/imports.lua'
+shared_script "config.lua"
