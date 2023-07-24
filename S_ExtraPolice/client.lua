@@ -138,7 +138,7 @@ function OpenMenuExtra()
 					RageUI.CloseAll()
 					exports['ActiveLife']:Alert("", "Tu n'est plus dans un véhicule", 10000, 'error')
 					break
-				elseif #(GetEntityCoords(PlayerPedId()) - vector3(-1077.71, -845.60, 4.57)) >= 5.0 then -- Modify this position if you change the menu item
+				elseif #(GetEntityCoords(PlayerPedId()) - ConfigModifVehicleSAPD['Main'].Position >= 5.0 then -- Modify this position if you change the menu item
 					RageUI.CloseAll()
 					exports['ActiveLife']:Alert("", "Tu es trop loin du point !", 10000, 'error')
 					break
