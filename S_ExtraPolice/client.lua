@@ -1,4 +1,4 @@
-ESX = nil
+ESX = exports["es_extended"]:getSharedObject()
 TriggerEvent('esx:getActiveLifeObject', function(obj) ESX = obj end) -- Edit your ESX Trigger
 
 ----------------------------------------------------------------
@@ -37,15 +37,14 @@ function DrawText3Ds(x, y, z, text)
 end
 
 ---------------------------------------------------------------
-
 local PoliceOpenExtra = false
-RMenu.Add('PoliceOpenExtra', 'menu', RageUI.CreateMenu("~s~SAPD - Customisation", "Que voulez vous changer ?"))
-RMenu.Add('PoliceOpenExtra', 'mettreextra', RageUI.CreateSubMenu(RMenu:Get('PoliceOpenExtra', 'menu'), "~s~SAPD - EXTRA", "Quel accessoires voulez-vous mettre ?"))
-RMenu:Get('PoliceOpenExtra', 'mettreextra'):SetRectangleBanner(106, 176, 105, 255)
-RMenu.Add('PoliceOpenExtra', 'retirerextra', RageUI.CreateSubMenu(RMenu:Get('PoliceOpenExtra', 'menu'), "~s~SAPD - EXTRA", "Quel accessoires voulez-vous retiorer ?"))
-RMenu:Get('PoliceOpenExtra', 'retirerextra'):SetRectangleBanner(197, 97, 97, 255)
-RMenu.Add('PoliceOpenExtra', 'autremenu', RageUI.CreateSubMenu(RMenu:Get('PoliceOpenExtra', 'menu'), "~s~SAPD - AUTRES", "Quel souhaitez vous faire ?"))
-RMenu:Get('PoliceOpenExtra', 'autremenu'):SetRectangleBanner(204, 210, 104, 255)
+RMenu.Add('PoliceOpenExtra', 'menu', RageUI.CreateMenu("~s~SAPD - Customization", LANGS[configLang].CUSTOMIZATION ))
+RMenu.Add('PoliceOpenExtra', LANGS[configLang].EXTRAS, RageUI.CreateSubMenu(RMenu:Get('PoliceOpenExtra', 'menu'), "~s~SAPD - EXTRAS", LANGS[configLang].PLACE))
+RMenu:Get('PoliceOpenExtra', LANGS[configLang].EXTRAS):SetRectangleBanner(106, 176, 105, 255)
+RMenu.Add('PoliceOpenExtra', LANGS[configLang].REMOVEEXTRAS, RageUI.CreateSubMenu(RMenu:Get('PoliceOpenExtra', 'menu'), "~s~SAPD - EXTRAS", LANGS[configLang].REMOVE))
+RMenu:Get('PoliceOpenExtra', LANGS[configLang].REMOVEEXTRAS):SetRectangleBanner(197, 97, 97, 255)
+RMenu.Add('PoliceOpenExtra', LANGS[configLang].OTHERMENU, RageUI.CreateSubMenu(RMenu:Get('PoliceOpenExtra', 'menu'), "~s~SAPD - OTHERS MENU", LANGS[configLang].OTHERS))
+RMenu:Get('PoliceOpenExtra', LANGS[configLang].OTHERMENU):SetRectangleBanner(204, 210, 104, 255)
 RMenu:Get('PoliceOpenExtra', 'menu').Closed = function()
     PoliceOpenExtra = false
 end
@@ -101,14 +100,23 @@ function GetNumVehicleModData(vehicle, modType)
 end
 
 local arraycar = {
-    "Noir", --1
-    "Rouge",--2
-    "Vert",--3
-    "Blanc",--4
-    "Jaune",--5
-    "Violet",--6
-    "Orange",--7
-    "Bleu"--8
+    -- "Noir", --1
+    -- "Rouge",--2
+    -- "Vert",--3
+    -- "Blanc",--4
+    -- "Jaune",--5
+    -- "Violet",--6
+    -- "Orange",--7
+    -- "Bleu",--8
+	LANGS[configLang].COLORS[1],
+	LANGS[configLang].COLORS[2],
+	LANGS[configLang].COLORS[3],
+	LANGS[configLang].COLORS[4],
+	LANGS[configLang].COLORS[5],
+	LANGS[configLang].COLORS[6],
+	LANGS[configLang].COLORS[7],
+	LANGS[configLang].COLORS[8],
+	
 }
 
 local couleur = {
@@ -136,26 +144,28 @@ function OpenMenuExtra()
 
 				if IsPedInAnyVehicle(PlayerPedId(), false) == false then 
 					RageUI.CloseAll()
-					exports['ActiveLife']:Alert("", "Tu n'est plus dans un véhicule", 10000, 'error')
+					--exports['ActiveLife']:Alert("", "Tu n'est plus dans un véhicule", 10000, 'error')
+					ESX.ShowNotification(LANGS[configLang].NO_VEHICLE)
 					break
-				elseif #(GetEntityCoords(PlayerPedId()) - ConfigModifVehicleSAPD['Main'].Position >= 5.0 then -- Modify this position if you change the menu item
+        elseif #(GetEntityCoords(PlayerPedId()) - Config.ModificationLocation) >= 5.0 then -- Modify this position if you change the menu item
 					RageUI.CloseAll()
-					exports['ActiveLife']:Alert("", "Tu es trop loin du point !", 10000, 'error')
+					--exports['ActiveLife']:Alert("", "Tu es trop loin du point !", 10000, 'error')
+					ESX.ShowNotification(LANGS[configLang].TOO_FAR)
 					break
 				end
 
                 RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', 'menu'), true, true, true, function()
-                    RageUI.ButtonWithStyle("→ Mettre des extras", nil, {RightLabel = "→→"}, true ,function(_,_,s)
-                    end, RMenu:Get('PoliceOpenExtra', 'mettreextra'))
+                    RageUI.ButtonWithStyle(LANGS[configLang].PLACE_EXTRAS, nil, {RightLabel = "→→"}, true ,function(_,_,s)
+                    end, RMenu:Get('PoliceOpenExtra', LANGS[configLang].EXTRAS))
 
-					RageUI.ButtonWithStyle("→ Retirer des extras", nil, {RightLabel = "→→"}, true ,function(_,_,s)
-                    end, RMenu:Get('PoliceOpenExtra', 'retirerextra'))
+					RageUI.ButtonWithStyle(LANGS[configLang].REMOVE_EXTRAS, nil, {RightLabel = "→→"}, true ,function(_,_,s)
+                    end, RMenu:Get('PoliceOpenExtra', LANGS[configLang].REMOVEEXTRAS))
 					
-					RageUI.ButtonWithStyle("→ Autres", nil, {RightLabel = "→→"}, true ,function(_,_,s)
-                    end, RMenu:Get('PoliceOpenExtra', 'autremenu'))
+					RageUI.ButtonWithStyle(LANGS[configLang].OTHER, nil, {RightLabel = "→→"}, true ,function(_,_,s)
+                    end, RMenu:Get('PoliceOpenExtra', LANGS[configLang].OTHERMENU))
                 end)
 
-                RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', 'autremenu'), true, true, true, function()
+                RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', LANGS[configLang].OTHERMENU), true, true, true, function()
 
 					RageUI.ButtonWithStyle('Livery', nil, {RightLabel = "→→"}, true, function(_,_,s)
 						if s then
@@ -168,7 +178,7 @@ function OpenMenuExtra()
 						end
 					end)
 
-					RageUI.List("Couleurs", arraycar, arrayIndexcar, nil, {}, true, function(Hovered, Active, Selected, i) arrayIndexcar = i
+					RageUI.List(LANGS[configLang].COLORNAME, arraycar, arrayIndexcar, nil, {}, true, function(Hovered, Active, Selected, i) arrayIndexcar = i
 						if (Selected) then
 							if couleur[arrayIndexcar] then
 								SetVehicleColours(VPed, couleur[arrayIndexcar].color, couleur[arrayIndexcar].color2)
@@ -176,7 +186,7 @@ function OpenMenuExtra()
 						end
 					end)
 
-					RageUI.ButtonWithStyle('Vitre', nil, {RightLabel = "→→"}, true, function(_,_,s)
+					RageUI.ButtonWithStyle(LANGS[configLang].WINDOW, nil, {RightLabel = "→→"}, true, function(_,_,s)
 						if s then
 							local CountWindow = GetNumVehicleWindowTints(VPed)
 							SetVehicleWindowTint(VPed, Window)
@@ -190,16 +200,17 @@ function OpenMenuExtra()
 
 				end)
 
-                RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', 'mettreextra'), true, true, true, function()
+                RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', LANGS[configLang].EXTRAS), true, true, true, function()
 				
-					RageUI.ButtonWithStyle("→ Mettre TOUT les extras", nil, {RightLabel = "→→"}, true ,function(_,_,s)
+					RageUI.ButtonWithStyle(LANGS[configLang].PUT_ALL_EXTRAS, nil, {RightLabel = "→→"}, true ,function(_,_,s)
 						if s then 
 							local Vengine = GetVehicleEngineHealth(VPed)/10
 							local Vengine2 = math.floor(Vengine)
 
 							if Vengine2 >= 99.0 then 
 
-								exports['ActiveLife']:Alert("", "Vous avez mis tout les extras de votre véhicule", 5000, 'success')
+								--exports['ActiveLife']:Alert("", "Vous avez mis tout les extras de votre véhicule", 5000, 'success')
+								ESX.ShowNotification(LANGS[configLang].EXTRAS_CONFIRM)
 								for i = startIndex, GetNumVehicleModData(VPed, 'extras'), 1 do
 									liste = 0
 									while true do 
@@ -212,12 +223,13 @@ function OpenMenuExtra()
 									end 
 								end
 							else 
-								exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+								--exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+								ESX.ShowNotification(LANGS[configLang].TOO_DAMAGED)
 							end
 						end
 					end)
 
-					RageUI.Separator("↓ Gestion Extra ↓")
+					RageUI.Separator(LANGS[configLang].EXTRA_MANAGE)
 
                     for i = startIndex, GetNumVehicleModData(VPed, 'extras'), 1 do
                         RageUI.ButtonWithStyle("Extra n°"..(i + 1).."", nil, {RightLabel = "→→"}, not TimeoutExtra ,function(_,_,s)
@@ -231,11 +243,13 @@ function OpenMenuExtra()
 									number = (i + 1)
 									mis = true
 									SetVehicleModData(VPed, 'extras', {id = number, enable = 0})
-									exports['ActiveLife']:Alert("", "Vous avez mis l'extra n°"..number.." sur votre véhicule.", 1000, 'success')
+									--exports['ActiveLife']:Alert("", "Vous avez mis l'extra n°"..number.." sur votre véhicule.", 1000, 'success')
+									ESX.ShowNotification(LANGS[configLang].EXTRA_NUMBER..number)
 									Citizen.SetTimeout(500, function() TimeoutExtra = false end)
 
 								else 
-									exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+									--exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+									ESX.ShowNotification(LANGS[configLang].TOO_DAMAGED)
 								end
                             end
                         end)
@@ -243,16 +257,17 @@ function OpenMenuExtra()
 
                 end)
 
-				RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', 'retirerextra'), true, true, true, function()
+				RageUI.IsVisible(RMenu:Get('PoliceOpenExtra', LANGS[configLang].REMOVEEXTRAS), true, true, true, function()
 
-					RageUI.ButtonWithStyle("→ Retirer TOUT les extras", nil, {RightLabel = "→→"}, true ,function(_,_,s)
+					RageUI.ButtonWithStyle(LANGS[configLang].REMOVEALL, nil, {RightLabel = "→→"}, true ,function(_,_,s)
 						if s then 
 							local Vengine = GetVehicleEngineHealth(VPed)/10
 							local Vengine2 = math.floor(Vengine)
 
 							if Vengine2 >= 99.0 then 
 
-								exports['ActiveLife']:Alert("", "Vous avez retiré tout les extras de votre véhicule", 5000, 'nosuccess')
+								--exports['ActiveLife']:Alert("", "Vous avez retiré tout les extras de votre véhicule", 5000, 'nosuccess')   
+								 ESX.ShowNotification(LANGS[configLang].REMOVE_CONFIRM)
 								for i = startIndex, GetNumVehicleModData(VPed, 'extras'), 1 do
 									liste = 0
 									while true do 
@@ -265,12 +280,13 @@ function OpenMenuExtra()
 									end 
 								end
 							else 
-								exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+								--exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')   
+								ESX.ShowNotification(LANGS[configLang].TOO_DAMAGED)
 							end
 						end
 					end)
 
-					RageUI.Separator("↓ Gestion Extra ↓")
+					RageUI.Separator(LANGS[configLang].EXTRA_MANAGE)
 
 					for i = startIndex, GetNumVehicleModData(VPed, 'extras'), 1 do
 						RageUI.ButtonWithStyle("Extra n°"..(i + 1).."", nil, {RightLabel = "→→"}, not TimeoutExtra ,function(_,_,s)
@@ -283,10 +299,12 @@ function OpenMenuExtra()
 									TimeoutExtra = true
 									number = (i + 1)
 									SetVehicleModData(VPed, 'extras', {id = number, enable = 1})
-									exports['ActiveLife']:Alert("", "Vous avez mis l'extra n°"..number.." sur votre véhicule.", 1000, 'nosuccess')
+									--exports['ActiveLife']:Alert("", "Vous avez mis l'extra n°"..number.." sur votre véhicule.", 1000, 'nosuccess')
+									ESX.ShowNotification(LANGS[configLang].EXTRA_NUMBER..number)
 									Citizen.SetTimeout(500, function() TimeoutExtra = false end)
 								else 
-									exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+									--exports['ActiveLife']:Alert("", "Véhicule trop abimé", 5000, 'error')
+									ESX.ShowNotification(LANGS[configLang].TOO_DAMAGED)
 								end
 							end
 						end)
@@ -299,7 +317,7 @@ function OpenMenuExtra()
     end 
 end
                             
-local vehicle = { -- Whitelist vehicle lists
+--[[local vehicle = { -- Whitelist vehicle lists
 	'18charger',
 	'cvpi',
 	'16charger',
@@ -310,13 +328,14 @@ local vehicle = { -- Whitelist vehicle lists
 	'police3',
 	'police4',
 	'POLICE4',
-}
+	'18chargerw'
+} ]]
 
 Citizen.CreateThread(function()
     while true do 
         Wait(4)
         local CoordsP = GetEntityCoords(PlayerPedId())
-			if ESX.PlayerData.job and ESX.PlayerData.job.name == 'police' then
+			if ESX.PlayerData.job and ESX.PlayerData.job.name == Config.JobName then
 				if IsPedInAnyVehicle(PlayerPedId(), false) ~= false then  
 					for k,v in pairs(ConfigModifVehicleSAPD) do
 						if #(CoordsP - v.Position) <= v.Distance then
@@ -324,7 +343,7 @@ Citizen.CreateThread(function()
 							DrawMarker(36, v.Position.x, v.Position.y, v.Position.z-0.97, v.Marker.dirX, v.Marker.dirY, v.Marker.dirZ, v.Marker.rotX, v.Marker.rotY, v.Marker.rotZ, v.Marker.scaleX, v.Marker.scaleY, v.Marker.scaleZ, v.Color.red, v.Color.green, v.Color.blue, v.Color.alpha, false, false, true, false, false, false, false, false)
 							if IsControlJustPressed(0, 38) and #(CoordsP - v.Position) <= 2.0 then 
 -- 								print(GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(PlayerPedId(), false))))
-								for _,v in pairs(vehicle) do 
+								for _,v in pairs(configVehicleList) do 
 									if GetDisplayNameFromVehicleModel(GetEntityModel(GetVehiclePedIsIn(PlayerPedId(), false))) == v then -- Use (string.lower) if you have problems with the vehicle name
 										OpenMenuExtra()
 									end
