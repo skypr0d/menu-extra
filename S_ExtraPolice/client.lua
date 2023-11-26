@@ -147,7 +147,7 @@ function OpenMenuExtra()
 					--exports['ActiveLife']:Alert("", "Tu n'est plus dans un véhicule", 10000, 'error')
 					ESX.ShowNotification(LANGS[configLang].NO_VEHICLE)
 					break
-				elseif #(GetEntityCoords(PlayerPedId()) - Config.ModificationLocation) >= 5.0 then -- Modify this position if you change the menu item
+        elseif #(GetEntityCoords(PlayerPedId()) - Config.ModificationLocation) >= 5.0 then -- Modify this position if you change the menu item
 					RageUI.CloseAll()
 					--exports['ActiveLife']:Alert("", "Tu es trop loin du point !", 10000, 'error')
 					ESX.ShowNotification(LANGS[configLang].TOO_FAR)
