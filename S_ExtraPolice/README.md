@@ -3,7 +3,6 @@
 QBCORE : by @Kaizen-DFA https://github.com/Kaizen-DFA/menu-extra
 
 > [Preview](https://youtu.be/YYjoAiIJZCI)
-> [Tebex](https://skyprod.tebex.io/package/5534037) *(It’s free, don’t worry)*
 
 ![Affiche ](https://user-images.githubusercontent.com/67479263/219873172-e270e594-fe86-417b-8ccb-128bd788f941.jpg)
 
