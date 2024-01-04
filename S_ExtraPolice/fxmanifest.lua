@@ -12,7 +12,6 @@ client_script {
     "RageUI/menu/panels/*.lua",
     "RageUI/menu/windows/*.lua",
     "RageUI/menu/Function.lua",
-	"languages.lua",
     "client.lua",
     
 }
